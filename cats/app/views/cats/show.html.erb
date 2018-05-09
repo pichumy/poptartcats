@@ -1,0 +1,38 @@
+<h1><%= @cat.name %></h1>
+
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAACgCAMAAADHEAL6AAAAFVBMVEX///8AAAD/mf+ZmZn/zJn/M5n/mZly7fXaAAABxUlEQVR4nO3au3LCMBBAUUhI/v+T08jNzmy0shdjmHNLoueBQkVut6buF6nrPiBAgAABAgSI8wAeF+llICBAgAABAgSINoCvk3o5CAgQIECAAAGiDWL1Ij+j6udVEBAgQIAAAQLE+0AcvUhXIECAAAECBIj3hzjaPRT/nkFnEHE9ECBAgAABAsTnQWzrfocykBnEbD0QIECAAAECxHGIODHWDZE9iLKDV0EixGwdECBAgAABAkQfRDYhTjwKkTW7QHauWHU+CBAgQIAAAaIPogpShVj9h5HqRY4GAgQIECBAgOiD2Aty9EG1QZ0FUAYBAQIECBAgQCxDrIJEiNUH1NYMIp6retHZPBAgQIAAAQJEP0QGEjv6oKpCzL6YOK46DwQIECBAgADxPIgZzCpE9uCKB/0NZRdfLa4LAgQIECBAgDgPIoI8QrMLZ1Uh4rjVz0GAAAECBAgQ14WIIKtlF4oXWy1bZzcACBAgQIAAAWI3QCwD2dsMZG/tvwQQIECAAAECRBlgtsHVa/slgBiBGIEYgRiBGIEYgRjNAKrju/bt3g8ECBAgQIAA8TyIrOr47v1n4/but3wQECBAgPjvICBAfCbEH+yzElBvujPUAAAAAElFTkSuQmCC" alt="">
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Value</th>
+  </tr>
+  <% [:age, :birth_date, :color, :sex].each do |attr_name| %>
+    <tr>
+      <td><%= attr_name %></td>
+      <td><%= @cat.send(attr_name) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<% if logged_in? && @cat.user_id == current_user.id  %>
+<%= link_to "Edit #{@cat.name}", edit_cat_url(@cat) %>
+<% end %>
+<br>
+<br>
+<%= link_to "Back to cats!", cats_url %>
+
+<%= link_to "Request cat", new_cat_rental_request_url %>
+
+<h2>Rental Requests</h2>
+<table>
+  <tr>
+    <th>Requester</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+  </tr>
+  <% reqs = @cat.rental_requests.includes(:requester, :cat)%>
+  <% reqs.each do |req| %>
+    <%= render 'req_tr', req: req %>
+  <% end %>
+</table>

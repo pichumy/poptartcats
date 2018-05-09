@@ -1,0 +1,5 @@
+<ul>
+<% @devices.each do |device| %>
+  <li> <%=device.ip_address%> token: <%=device.session_token%> </li>
+<% end %>
+</ul>
